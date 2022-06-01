@@ -21,7 +21,7 @@ public class GetValheimIPCommand : ModuleBase<ShardedCommandContext>
     }
 
     [Command("valheimip", RunMode = RunMode.Async)]
-    public async Task Hello()
+    public async Task ValheimIPCommand()
     {
         var message = "";
         var serverIp = await _valheimService.GetServerIp();

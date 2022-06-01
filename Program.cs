@@ -29,9 +29,11 @@ var commands = new CommandService(new CommandServiceConfig
 Bootstrapper.Init();
 Bootstrapper.RegisterInstance(client);
 Bootstrapper.RegisterInstance(commands);
-Bootstrapper.RegisterOptions<CloudflareConfiguration>(config.GetRequiredSection("Cloudflare"));
+Bootstrapper.RegisterOptions<CloudflareConfiguration>(config.GetRequiredSection("CloudflareSettings"));
+Bootstrapper.RegisterOptions<SshConfiguration>(config.GetRequiredSection("SshSettings"));
 Bootstrapper.RegisterType<ICommandHandler, CommandHandler>();
 Bootstrapper.RegisterType<IValheimService, ValheimService>();
+Bootstrapper.RegisterType<ISshService, SshService>();
 Bootstrapper.RegisterInstance(config);
 
 await MainAsync();

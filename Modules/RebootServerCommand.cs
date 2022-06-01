@@ -20,7 +20,7 @@ public class RebootServerCommand : ModuleBase<ShardedCommandContext>
     [Command("rebootserver", RunMode = RunMode.Async)]
     public async Task RebootServer()
     {
-        Context.Message.ReplyAsync("Attempting to reboot the server").ConfigureAwait(false).GetAwaiter().GetResult();
+        await Context.Message.ReplyAsync("Attempting to reboot the server");
         var message = "";
 
         try

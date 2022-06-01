@@ -6,13 +6,14 @@ using ValheimDiscordBot.Init;
 using ValheimDiscordBot.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 var config = new ConfigurationBuilder()
     .AddJsonFile($"appsettings.json")
     .AddEnvironmentVariables()
     .Build();
-var client = new DiscordShardedClient();
 
+var client = new DiscordShardedClient();
 
 var commands = new CommandService(new CommandServiceConfig
 {
@@ -24,11 +25,19 @@ var commands = new CommandService(new CommandServiceConfig
     CaseSensitiveCommands = false,
 });
 
+var path = Directory.GetCurrentDirectory();
+
+var loggerFactory = LoggerFactory.Create(
+    builder => builder
+                .AddConsole()
+                .AddDebug()
+                .AddFile($"{path}\\Logs\\Log.txt"));
 
 // Setup your DI container.
 Bootstrapper.Init();
 Bootstrapper.RegisterInstance(client);
 Bootstrapper.RegisterInstance(commands);
+Bootstrapper.RegisterInstance(loggerFactory);
 Bootstrapper.RegisterOptions<CloudflareConfiguration>(config.GetRequiredSection("CloudflareSettings"));
 Bootstrapper.RegisterOptions<SshConfiguration>(config.GetRequiredSection("SshSettings"));
 Bootstrapper.RegisterType<ICommandHandler, CommandHandler>();
@@ -41,6 +50,9 @@ await MainAsync();
 
 async Task MainAsync()
 {
+    // create a logger factory
+
+
     await Bootstrapper.ServiceProvider.GetRequiredService<ICommandHandler>().InitializeAsync();
 
     client.ShardReady += async shard =>

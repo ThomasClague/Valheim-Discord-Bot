@@ -1,4 +1,5 @@
 ﻿using Discord;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +12,11 @@ namespace ValheimDiscordBot.Services
 {
     public class BashService : IBashService
     {
+        private readonly ILogger<BashService> _logger;
+        public BashService(ILogger<BashService> logger)
+        {
+            _logger = logger;
+        }
         public async Task RunBashScript(string script)
         {
             try
@@ -35,6 +41,7 @@ namespace ValheimDiscordBot.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError($"exception thrown when running bash scripr: {ex}");
                 await Logger.Log(LogSeverity.Error, "BashService", $"{ex.Message} - {ex}");
                 throw;
             }

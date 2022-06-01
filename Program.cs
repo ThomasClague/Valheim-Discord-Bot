@@ -34,6 +34,7 @@ Bootstrapper.RegisterOptions<SshConfiguration>(config.GetRequiredSection("SshSet
 Bootstrapper.RegisterType<ICommandHandler, CommandHandler>();
 Bootstrapper.RegisterType<IValheimService, ValheimService>();
 Bootstrapper.RegisterType<ISshService, SshService>();
+Bootstrapper.RegisterType<IBashService, BashService>();
 Bootstrapper.RegisterInstance(config);
 
 await MainAsync();

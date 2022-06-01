@@ -10,18 +10,10 @@ namespace ValheimDiscordBot.Modules;
 public class RebootServerCommand : ModuleBase<ShardedCommandContext>
 {
     public CommandService CommandService { get; set; }
-
-    private readonly CloudflareConfiguration _cloudflareConfiguration;
-    private readonly ISshService _sshService;
     private readonly IBashService _bashService;
 
-    public RebootServerCommand(
-        IOptions<CloudflareConfiguration> cloudflareConfiguration,
-        ISshService sshService,
-        IBashService bashService)
+    public RebootServerCommand(IBashService bashService)
     {
-        _cloudflareConfiguration = cloudflareConfiguration.Value;
-        _sshService = sshService;
         _bashService = bashService;
     }
 

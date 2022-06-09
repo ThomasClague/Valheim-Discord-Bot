@@ -24,10 +24,11 @@ namespace ValheimDiscordBot.Services
         {
             _cloudflareConfiguration = cloudflareConfiguration.Value;
             _http = httpClientFactory.CreateClient();
-            _http.DefaultRequestHeaders.Add("X-Auth-Email", _cloudflareConfiguration.email);
-            _http.DefaultRequestHeaders.Add("X-Auth-Key", _cloudflareConfiguration.access_key);
-            _http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            url = $"https://api.cloudflare.com/client/v4/zones/{_cloudflareConfiguration.zone_id}/dns_records?type=A&name={_cloudflareConfiguration.record_name}";
+            //_http.DefaultRequestHeaders.Add("X-Auth-Email", _cloudflareConfiguration.email);
+            //_http.DefaultRequestHeaders.Add("X-Auth-Key", _cloudflareConfiguration.access_key);
+            //_http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //url = $"https://api.cloudflare.com/client/v4/zones/{_cloudflareConfiguration.zone_id}/dns_records?type=A&name={_cloudflareConfiguration.record_name}";
+            url = "https://ifconfig.me/ip";
         }
         public async Task<string> GetServerIp()
         {
@@ -43,23 +44,13 @@ namespace ValheimDiscordBot.Services
                 return null;
             }
             
-            var dnsRecord = JsonConvert.DeserializeObject<CloudflareReponse>(responseBody);
-
-
-            if (dnsRecord == null || dnsRecord.success == false)
-            {
-                await Logger.Log(LogSeverity.Error, "Cloudflare API", $"Cloudflare api error: { response.StatusCode} { response.ReasonPhrase}: { dnsRecord.errors.ToString()}");
-                return null;
-            }
-
-            var IP = dnsRecord?.result[0]?.content;
+            var IP = responseBody;
 
             if (IP == null)
             {
-                await Logger.Log(LogSeverity.Error, "Cloudflare API", $"Cloudflare api error: {response.StatusCode} {response.ReasonPhrase}: {dnsRecord.errors.ToString()}");
+                await Logger.Log(LogSeverity.Error, "IFConfig", $"IFConfig api error: {response.StatusCode} {response.ReasonPhrase}: {response}");
                 return null;
             }
-
 
             return IP;
         }

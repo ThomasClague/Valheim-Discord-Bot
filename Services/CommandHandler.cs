@@ -59,7 +59,7 @@ public class CommandHandler : ICommandHandler
         var markPos = 0;
         if (msg.HasCharPrefix('!', ref markPos) || msg.HasCharPrefix('?', ref markPos))
         {
-            await context.Message.ReplyAsync($"Message received {msg.Content}");
+            //await context.Message.ReplyAsync($"Message received {msg.Content}");
             var result = await _commands.ExecuteAsync(context, markPos, Bootstrapper.ServiceProvider);
         }
     }
